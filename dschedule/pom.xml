@@ -5,10 +5,15 @@
   <modelVersion>4.0.0</modelVersion>
 
   <groupId>org.enterprise</groupId>
-  <artifactId>dschedule-sdk</artifactId>
+  <artifactId>dschedule</artifactId>
+  <packaging>pom</packaging>
   <version>1.0-SNAPSHOT</version>
+  <modules>
+    <module>dschedule-sdk</module>
+    <module>dschedule-svc</module>
+  </modules>
 
-  <name>dschedule-sdk</name>
+  <name>dschedule</name>
   <!-- FIXME change it to the project's website -->
   <url>http://www.example.com</url>
 
