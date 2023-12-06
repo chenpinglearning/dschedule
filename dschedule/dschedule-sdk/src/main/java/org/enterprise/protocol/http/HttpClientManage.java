@@ -70,7 +70,7 @@ public class HttpClientManage {
             HttpPost httpPost = new HttpPost(url);
             httpPost.setHeader("Accept", "application/json;charset=UTF-8");
             httpPost.setHeader("Content-Type", "application/json");
-            StringEntity stringEntity = new StringEntity(message, ContentType.create("application/json" ,"UTF-8"));
+            StringEntity stringEntity = new StringEntity(message, ContentType.create("application/json", "UTF-8"));
             httpPost.setEntity(stringEntity);
 
             BasicHttpClientResponseHandler basicHttpClientResponseHandler = new BasicHttpClientResponseHandler();

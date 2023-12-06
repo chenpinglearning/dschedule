@@ -7,14 +7,12 @@ package org.enterprise.constants;
  * 0----message delayed user rabbitmq(support message arbitrary delay , millisecond delay)
  * 1----message delayed user xxl_job and mysql (support message arbitrary delay , second delay)
  * 2----message delayed user redis(support message arbitrary delay , millisecond delay , window batch message)
- * 3----message delayed user rocketMq(support message arbitrary delay , millisecond delay)
  */
 
 public enum DscheduleType {
     RABBITMQ(0, "rabbitMq"),
     XXL_JOB_MYSQL(1, "xxl_job_mysql"),
-    REDIS(2, "redis"),
-    ROCKETMQ(3, "rocketMq");
+    REDIS(2, "redis");
 
 
     private int type;

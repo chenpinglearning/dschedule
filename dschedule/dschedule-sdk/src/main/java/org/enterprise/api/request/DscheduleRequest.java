@@ -12,10 +12,10 @@ import java.util.Map;
  */
 public class DscheduleRequest {
     /**
-     * timestamp(delay expire time)
+     * ms
      */
     @NotNull
-    private long delayTime;
+    private Integer delayTime;
     /**
      * DscheduleType -- enum DscheduleType
      */
@@ -28,7 +28,7 @@ public class DscheduleRequest {
      * applicationId
      */
     @NotNull
-    private String appid;
+    private String appId;
     /**
      * requestId
      */
@@ -40,22 +40,23 @@ public class DscheduleRequest {
     private String scene = "default";
     /**
      * business param(callback、view)
+     * business_id = xx
      */
     private Map<String, Object> param = new HashMap<>();
     /**
      * for example
      * call_back_url = "https://host/call_back_url"
      * grey_version = v5337
-     * windows_package = 5000ms
+     * windows_package = 5000ms , only support redis
      */
     private Map<String, Object> extraParam = new HashMap<>();
 
 
-    public long getDelayTime() {
+    public Integer getDelayTime() {
         return delayTime;
     }
 
-    public void setDelayTime(long delayTime) {
+    public void setDelayTime(Integer delayTime) {
         this.delayTime = delayTime;
     }
 
@@ -75,12 +76,12 @@ public class DscheduleRequest {
         this.protocolType = protocolType;
     }
 
-    public String getAppid() {
-        return appid;
+    public String getAppId() {
+        return appId;
     }
 
-    public void setAppid(String appid) {
-        this.appid = appid;
+    public void setAppId(String appId) {
+        this.appId = appId;
     }
 
     public String getSeqId() {
@@ -122,7 +123,7 @@ public class DscheduleRequest {
                 "delayTime=" + delayTime +
                 ", delayType=" + delayType +
                 ", protocolType=" + protocolType +
-                ", appid='" + appid + '\'' +
+                ", appId='" + appId + '\'' +
                 ", seqId='" + seqId + '\'' +
                 ", scene='" + scene + '\'' +
                 ", param=" + param +

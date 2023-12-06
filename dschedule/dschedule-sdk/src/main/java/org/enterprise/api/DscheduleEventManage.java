@@ -5,14 +5,12 @@ import org.enterprise.api.response.DscheduleResponse;
 import org.enterprise.constants.DscheduleType;
 import org.enterprise.constants.ProtocolType;
 import org.enterprise.protocol.ProducerHandler;
+import org.enterprise.util.DscheduleThreadPool;
 import org.enterprise.util.JacksonUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.Map;
-import java.util.concurrent.ArrayBlockingQueue;
-import java.util.concurrent.ThreadPoolExecutor;
-import java.util.concurrent.TimeUnit;
 
 /**
  * @author: albert.chen
@@ -21,12 +19,10 @@ import java.util.concurrent.TimeUnit;
  */
 public class DscheduleEventManage {
     public static final Logger logger = LoggerFactory.getLogger(DscheduleEventManage.class);
-    private static final ThreadPoolExecutor httpExecutor = new ThreadPoolExecutor(10, 20, 60, TimeUnit.SECONDS
-            , new ArrayBlockingQueue<>(100), new ThreadPoolExecutor.AbortPolicy());
 
 
     public static void pushDelayMessage(DscheduleRequest dscheduleRequest) {
-        httpExecutor.execute(() -> {
+        DscheduleThreadPool.ProductDscheduleThreadpool.execute(() -> {
             startPushDelayMessage(dscheduleRequest);
         });
     }
@@ -78,7 +74,7 @@ public class DscheduleEventManage {
 
     private static boolean checkParam(DscheduleRequest dscheduleRequest) {
         if (dscheduleRequest == null || dscheduleRequest.getDelayTime() < System.currentTimeMillis()
-                || dscheduleRequest.getAppid() == null || dscheduleRequest.getSeqId() == null) {
+                || dscheduleRequest.getAppId() == null || dscheduleRequest.getSeqId() == null) {
             return false;
         }
 

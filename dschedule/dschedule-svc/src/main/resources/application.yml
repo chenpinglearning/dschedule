@@ -1,0 +1,45 @@
+server:
+  port: 8888
+
+
+open:
+  rabbitMq: true
+  redis: false
+  kafka: false
+  xxlJob: false
+
+
+kafka:
+  bootstrap-servers: localhost:9092
+
+xxl:
+  job:
+    admin:
+      addresses: http://localhost:8080/xxl-job-admin
+    executor:
+      appname: dschedule-svc
+      port: 9999
+      ip:
+      address:
+    accessToken:
+
+
+callBack:
+  way: http
+
+
+spring:
+  application:
+    name: dschedule-svc
+  datasource:
+    driver-class-name: com.mysql.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/dschedule?serverTimezone=Asia/Shanghai&useUnicode=true&characterEncoding=utf-8&zeroDateTimeBehavior=convertToNull
+    username: root
+    password: 123456
+  rabbitmq:
+    addresses: localhost:8080
+    username: admin
+    password: 123456
+    virtual-host: /
+
+
