@@ -48,7 +48,6 @@ public class MysqlDelayAdapter extends ProductAbstractDelayQueue {
             delayMessage.setGreyVersion((String) dscheduleRequest.getExtraParam().get("grey_version"));
         }
 
-        DelayMessageMapper delayMessageMapper = SpringContextUtil.getBean(DelayMessageMapper.class);
         delayMessageMapper.insert(delayMessage);
     }
 

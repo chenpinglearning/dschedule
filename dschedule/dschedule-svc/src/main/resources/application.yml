@@ -9,6 +9,12 @@ open:
   xxlJob: false
 
 
+redis:
+  cluster:
+    nodes: 127.0.0.1:6379, 127.0.0.1:6379, 127.0.0.1:6379
+    password:
+
+
 kafka:
   bootstrap-servers: localhost:9092
 
