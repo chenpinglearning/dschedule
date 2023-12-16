@@ -27,8 +27,6 @@ import java.util.Optional;
 public class StartDelayMessageJob {
     @Resource
     private MysqlDelayAdapter delayMessageMysqlAdapter;
-    @Resource
-    private DelayMessageCallBackService delayMessageCallBackService;
 
 
     /**

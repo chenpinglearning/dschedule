@@ -11,7 +11,7 @@ import java.util.concurrent.TimeUnit;
  */
 public class DscheduleThreadPool {
 
-    public static ThreadPoolExecutor ProductDscheduleThreadpool = new ThreadPoolExecutor(Runtime.getRuntime().availableProcessors() * 2, Runtime.getRuntime().availableProcessors() * 4,
+    public static ThreadPoolExecutor productDscheduleThreadpool = new ThreadPoolExecutor(Runtime.getRuntime().availableProcessors() * 2, Runtime.getRuntime().availableProcessors() * 4,
             30L, TimeUnit.SECONDS, new ArrayBlockingQueue<>(100), new ThreadPoolExecutor.AbortPolicy());
 
     public static ThreadPoolExecutor consumerDscheduleThreadpool = new ThreadPoolExecutor(Runtime.getRuntime().availableProcessors() * 2, Runtime.getRuntime().availableProcessors() * 4,

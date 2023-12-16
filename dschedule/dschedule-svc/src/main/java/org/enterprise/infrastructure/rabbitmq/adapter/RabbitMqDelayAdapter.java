@@ -50,7 +50,6 @@ public class RabbitMqDelayAdapter extends ProductAbstractDelayQueue {
         log.info("consumer delay message from rabbit {}", dscheduleRequest.getSeqId());
 
         callBackMessageManager.callBackDelayMessage(dscheduleRequest);
-
     }
 
 }

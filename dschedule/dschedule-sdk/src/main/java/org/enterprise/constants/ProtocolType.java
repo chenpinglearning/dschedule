@@ -2,6 +2,7 @@ package org.enterprise.constants;
 
 import org.enterprise.protocol.ProducerHandler;
 import org.enterprise.protocol.http.DscheduleHttpProducer;
+import org.enterprise.protocol.queue.kafka.DscheduleKafkaProducer;
 
 /**
  * @author: albert.chen
@@ -9,7 +10,9 @@ import org.enterprise.protocol.http.DscheduleHttpProducer;
  * @description:
  */
 public enum ProtocolType {
-    HTTP(0, "http", new DscheduleHttpProducer());
+    HTTP(0, "http", new DscheduleHttpProducer()),
+    KAFKA(0, "kafka", new DscheduleKafkaProducer()),
+    ;
 
 
     private int protocol;

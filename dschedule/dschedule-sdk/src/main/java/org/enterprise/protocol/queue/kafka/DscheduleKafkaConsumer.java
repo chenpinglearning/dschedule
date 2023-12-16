@@ -1,6 +1,11 @@
 package org.enterprise.protocol.queue.kafka;
 
+import org.enterprise.api.request.DscheduleRequest;
+import org.enterprise.constants.EnvironmentConfig;
 import org.enterprise.protocol.ConsumerHandler;
+import org.enterprise.util.JacksonUtil;
+
+import java.util.Objects;
 
 /**
  * @author: albert.chen
@@ -12,6 +17,17 @@ public class DscheduleKafkaConsumer implements ConsumerHandler {
 
     @Override
     public void callBackMessage(String message) {
+        DscheduleRequest dscheduleRequest = JacksonUtil.string2Obj(message, DscheduleRequest.class);
+        String appId = System.getProperty(EnvironmentConfig.APP_ID);
+        if (Objects.equals(appId, dscheduleRequest.getAppId())) {
+            return;
+        }
+
+        delayCallBackMessage(dscheduleRequest);
+    }
+
+
+    protected void delayCallBackMessage(DscheduleRequest dscheduleRequest) {
 
     }
 

@@ -12,6 +12,6 @@ public class DscheduleKafkaProducer implements ProducerHandler {
 
     @Override
     public void sendDelayMessage(String delayMessage) throws Exception {
-        //  KafkaProducerManager.sendMessage(delayMessage);
+        KafkaProducerManager.sendMessage(delayMessage);
     }
 }

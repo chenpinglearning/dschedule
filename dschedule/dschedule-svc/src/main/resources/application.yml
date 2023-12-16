@@ -1,3 +1,7 @@
+app:
+  id: dschedule-svc
+
+
 server:
   port: 8888
 

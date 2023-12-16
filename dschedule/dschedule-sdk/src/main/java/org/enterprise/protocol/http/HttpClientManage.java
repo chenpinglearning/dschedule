@@ -51,7 +51,7 @@ public class HttpClientManage {
 
     public static String postJson(String message) throws Exception {
         String dscheduleServerHost = System.getProperty(EnvironmentConfig.HTTP_HOST);
-        if (dscheduleServerHost == null || "".equals(dscheduleServerHost)) {
+        if (dscheduleServerHost == null || dscheduleServerHost.isEmpty()) {
             throw new Exception("not found host");
         }
 

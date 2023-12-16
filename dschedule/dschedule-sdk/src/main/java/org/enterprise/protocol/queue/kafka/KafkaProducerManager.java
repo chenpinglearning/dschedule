@@ -1,4 +1,3 @@
-/*
 package org.enterprise.protocol.queue.kafka;
 
 import org.apache.kafka.clients.producer.KafkaProducer;
@@ -10,26 +9,16 @@ import org.slf4j.LoggerFactory;
 
 import java.util.Properties;
 
-*/
+
 /**
  * @author: albert.chen
  * @create: 2023-11-29
  * @description:
- *//*
+ */
 
 public class KafkaProducerManager {
     private static final Logger logger = LoggerFactory.getLogger(KafkaProducerManager.class);
-    private static KafkaProducer<String, String> kafkaProducer = null;
-
-
-    static {
-        try {
-            Properties properties = initProductConfig();
-            kafkaProducer = new KafkaProducer<>(properties);
-        } catch (Exception e) {
-            logger.warn("create kafkaProducer error", e);
-        }
-    }
+    private static final KafkaProducer<String, String> kafkaProducer = new KafkaProducer<>(initProductConfig());
 
 
     private static Properties initProductConfig() {
@@ -53,4 +42,4 @@ public class KafkaProducerManager {
     }
 
 }
-*/
+

@@ -22,7 +22,7 @@ public class DscheduleEventManage {
 
 
     public static void pushDelayMessage(DscheduleRequest dscheduleRequest) {
-        DscheduleThreadPool.ProductDscheduleThreadpool.execute(() -> {
+        DscheduleThreadPool.productDscheduleThreadpool.execute(() -> {
             startPushDelayMessage(dscheduleRequest);
         });
     }
