@@ -8,15 +8,15 @@ server:
 
 open:
   rabbitMq: true
-  redis: false
+  redis: true
   kafka: false
   xxlJob: false
 
 
 redis:
+  model: single
   cluster:
-    nodes: 127.0.0.1:6379, 127.0.0.1:6379, 127.0.0.1:6379
-    password:
+    nodes: 127.0.0.1:6379
   delay:
     message:
       pool: [{"appId":"test","scene":"default","pool":"default"}]
