@@ -16,6 +16,7 @@ public enum CallWayEnum {
     private Integer way;
     private String msg;
     private DelayMessageCallBackService delayMessageCallBackService;
+
     CallWayEnum(Integer way, String msg, DelayMessageCallBackService delayMessageCallBackService) {
         this.way = way;
         this.msg = msg;

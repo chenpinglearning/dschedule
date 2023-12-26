@@ -44,7 +44,7 @@ public class DscheduleRequest {
      * for example
      * call_back_url = "https://host/call_back_url"
      * grey_version = v5337
-     * windows_package = 5000ms , only support redis
+     * windows_package_delay_time = 5000ms , only support redis
      */
     private Map<String, Object> extraParam = new HashMap<>();
 

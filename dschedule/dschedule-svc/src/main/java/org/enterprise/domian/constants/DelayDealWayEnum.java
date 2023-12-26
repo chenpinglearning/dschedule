@@ -18,6 +18,7 @@ public enum DelayDealWayEnum {
     private Integer way;
     private String msg;
     private ProductAbstractDelayQueue productAbstractDelayQueue;
+
     DelayDealWayEnum(Integer way, String msg, ProductAbstractDelayQueue productAbstractDelayQueue) {
         this.way = way;
         this.msg = msg;

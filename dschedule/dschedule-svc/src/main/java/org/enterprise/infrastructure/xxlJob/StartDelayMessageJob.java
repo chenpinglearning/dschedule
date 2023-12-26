@@ -5,7 +5,6 @@ import com.xxl.job.core.handler.annotation.XxlJob;
 import lombok.extern.slf4j.Slf4j;
 import org.enterprise.api.request.DscheduleRequest;
 import org.enterprise.domian.entity.DelayMessage;
-import org.enterprise.domian.service.DelayMessageCallBackService;
 import org.enterprise.infrastructure.mysql.adapter.MysqlDelayAdapter;
 import org.enterprise.util.JacksonUtil;
 import org.springframework.stereotype.Component;

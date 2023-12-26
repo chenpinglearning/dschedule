@@ -7,7 +7,6 @@ import org.enterprise.domian.constants.DealStatus;
 import org.enterprise.domian.entity.DelayMessage;
 import org.enterprise.infrastructure.ProductAbstractDelayQueue;
 import org.enterprise.infrastructure.mysql.mapper.DelayMessageMapper;
-import org.enterprise.infrastructure.utils.spring.SpringContextUtil;
 import org.enterprise.util.JacksonUtil;
 import org.springframework.stereotype.Component;
 
@@ -43,7 +42,7 @@ public class MysqlDelayAdapter extends ProductAbstractDelayQueue {
         delayMessage.setUpdateTime(new Date());
 
         if (dscheduleRequest.getExtraParam() != null) {
-            delayMessage.setWindowPackageTime((String) dscheduleRequest.getExtraParam().get("windows_package"));
+            delayMessage.setWindowPackageTime((String) dscheduleRequest.getExtraParam().get("windows_package_delay_time"));
             delayMessage.setCallBackUrl((String) dscheduleRequest.getExtraParam().get("call_back_url"));
             delayMessage.setGreyVersion((String) dscheduleRequest.getExtraParam().get("grey_version"));
         }

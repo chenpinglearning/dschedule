@@ -17,6 +17,9 @@ redis:
   cluster:
     nodes: 127.0.0.1:6379, 127.0.0.1:6379, 127.0.0.1:6379
     password:
+  delay:
+    message:
+      pool: [{"appId":"test","scene":"default","pool":"default"}]
 
 
 kafka:
@@ -36,6 +39,10 @@ xxl:
 
 callBack:
   way: http
+
+
+
+
 
 
 spring:
