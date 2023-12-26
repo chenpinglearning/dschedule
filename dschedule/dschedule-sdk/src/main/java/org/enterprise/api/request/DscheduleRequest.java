@@ -15,12 +15,8 @@ public class DscheduleRequest {
      */
     private Integer delayTime;
     /**
-     * DscheduleType -- enum DscheduleType
-     */
-    private Integer delayType;
-    /**
      * protocolType -- enum ProductProtocolType
-     * ProductProtocolType = ConsumerProtocolType
+     * protocolType -- enum ConsumerProtocolType
      */
     private Integer protocolType;
     /**
@@ -55,14 +51,6 @@ public class DscheduleRequest {
 
     public void setDelayTime(Integer delayTime) {
         this.delayTime = delayTime;
-    }
-
-    public Integer getDelayType() {
-        return delayType;
-    }
-
-    public void setDelayType(Integer delayType) {
-        this.delayType = delayType;
     }
 
     public Integer getProtocolType() {
@@ -118,7 +106,6 @@ public class DscheduleRequest {
     public String toString() {
         return "DscheduleRequest{" +
                 "delayTime=" + delayTime +
-                ", delayType=" + delayType +
                 ", protocolType=" + protocolType +
                 ", appId='" + appId + '\'' +
                 ", seqId='" + seqId + '\'' +

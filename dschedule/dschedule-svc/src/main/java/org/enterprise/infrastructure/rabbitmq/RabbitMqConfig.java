@@ -31,7 +31,7 @@ public class RabbitMqConfig {
     }
 
     @Bean
-    public Binding deplyBinding(Queue queue, Exchange exchange) {
-        return BindingBuilder.bind(queue).to(exchange).with(QueueEnum.DELAY_MESSAGE_QUEUE.getRoutingKey()).noargs();
+    public Binding deplyBinding(Queue queue) {
+        return BindingBuilder.bind(queue).to(delayExchange()).with(QueueEnum.DELAY_MESSAGE_QUEUE.getRoutingKey()).noargs();
     }
 }

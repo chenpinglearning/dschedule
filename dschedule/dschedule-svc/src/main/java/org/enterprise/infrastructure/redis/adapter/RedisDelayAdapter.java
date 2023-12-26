@@ -47,7 +47,7 @@ public class RedisDelayAdapter extends ProductAbstractDelayQueue {
                 && f.getScene().equals(dscheduleRequest.getScene())).collect(Collectors.toList()).get(0);
         String actionPool = exitsConfig.getPool();
         Integer currentSlot = timeWheelService.getCurrentSlot(actionPool);
-        Integer targetSlot = 0 ;
+        Integer targetSlot = 0;
         if (windowsPackageDelayTime != null && windowsPackageDelayTime > 0) {
             //windows_package message deal
             targetSlot = (currentSlot + (windowsPackageDelayTime / exitsConfig.getWindowsPackage())) % KhronosBizConstant.WINDOWS_PACKAGE_SIMPLE_SLOT_NUM;
@@ -66,10 +66,9 @@ public class RedisDelayAdapter extends ProductAbstractDelayQueue {
     }
 
 
-
     public void callBackDelayMessage(List<TaskEntry> taskEntryList) {
         for (TaskEntry taskEntry : taskEntryList) {
-            DscheduleRequest dscheduleRequest = JacksonUtil.string2Obj(taskEntry.getParams() , DscheduleRequest.class);
+            DscheduleRequest dscheduleRequest = JacksonUtil.string2Obj(taskEntry.getParams(), DscheduleRequest.class);
             callBackMessageManager.callBackDelayMessage(dscheduleRequest);
         }
     }

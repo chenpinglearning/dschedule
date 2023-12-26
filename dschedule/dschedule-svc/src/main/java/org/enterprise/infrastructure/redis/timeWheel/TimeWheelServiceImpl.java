@@ -12,7 +12,6 @@ import org.springframework.util.CollectionUtils;
 import javax.annotation.Resource;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
-import java.util.stream.Collectors;
 
 /**
  * @Description
@@ -21,7 +20,7 @@ import java.util.stream.Collectors;
  **/
 @Service
 @Slf4j
-public class TimeWheelServiceImpl  implements TimeWheelService {
+public class TimeWheelServiceImpl implements TimeWheelService {
     @Resource
     private PoolRedisClusterUtil poolRedisClusterUtil;
     @Resource

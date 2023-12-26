@@ -2,7 +2,6 @@ package org.enterprise.api;
 
 import org.enterprise.api.request.DscheduleRequest;
 import org.enterprise.api.response.DscheduleResponse;
-import org.enterprise.constants.DscheduleType;
 import org.enterprise.constants.ProtocolType;
 import org.enterprise.protocol.ProducerHandler;
 import org.enterprise.util.DscheduleThreadPool;
@@ -41,9 +40,6 @@ public class DscheduleEventManage {
             return DscheduleResponse.paramNotValid();
         }
         logger.info("push message request {}", dscheduleRequest.getSeqId());
-        if (dscheduleRequest.getDelayType() == null) {
-            dscheduleRequest.setDelayType(DscheduleType.RABBITMQ.getType());
-        }
 
         if (dscheduleRequest.getProtocolType() == null) {
             dscheduleRequest.setProtocolType(ProtocolType.HTTP.getProtocol());
@@ -73,7 +69,7 @@ public class DscheduleEventManage {
 
 
     private static boolean checkParam(DscheduleRequest dscheduleRequest) {
-        if (dscheduleRequest == null || dscheduleRequest.getDelayTime() < System.currentTimeMillis()
+        if (dscheduleRequest == null || dscheduleRequest.getDelayTime() == null
                 || dscheduleRequest.getAppId() == null || dscheduleRequest.getSeqId() == null) {
             return false;
         }

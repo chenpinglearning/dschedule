@@ -23,7 +23,8 @@ import java.util.stream.Collectors;
  * @description:
  */
 @Slf4j
-@RestController("/delay/message/")
+@RestController
+@RequestMapping("/dschedule/delay/message/")
 public class DelayMessageController {
     @Resource
     private DelayMessageApplication delayMessageApplication;
@@ -36,7 +37,7 @@ public class DelayMessageController {
         DscheduleRequest dscheduleRequest = JacksonUtil.string2Obj(message, DscheduleRequest.class);
 
         if (dscheduleRequest == null || dscheduleRequest.getAppId() == null || dscheduleRequest.getScene() == null
-                || dscheduleRequest.getDelayTime() < System.currentTimeMillis() || dscheduleRequest.getDelayType() == null) {
+                || dscheduleRequest.getDelayTime() < System.currentTimeMillis()) {
             throw new BusinessException("param error");
         }
 

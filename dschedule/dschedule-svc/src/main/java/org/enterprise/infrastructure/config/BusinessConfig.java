@@ -18,19 +18,19 @@ import java.util.List;
 @Slf4j
 @Component
 public class BusinessConfig {
-    /**
-     * 冷藏车司机物理车型
-     */
+    @Value("${delay.message.demotion:false}")
+    private Boolean delayMessageDemotion;
+
     private List<RedisDelayMessagePool> redisDelayMessagePool;
 
     @Value("${redis.delay.message.pool:[]}")
     public void setRedisDelayMessagePoolConfigList(String str) {
         try {
             this.redisDelayMessagePool = JacksonUtil.string2Collection(str, List.class, RedisDelayMessagePool.class);
-        } catch( Exception e ){
+        } catch (Exception e) {
             log.error("setRedisDelayMessagePoolConfigList parse error{}", str, e);
         } finally {
-            log.info("setRedisDelayMessagePoolConfigList {}" , str);
+            log.info("setRedisDelayMessagePoolConfigList {}", str);
         }
     }
 

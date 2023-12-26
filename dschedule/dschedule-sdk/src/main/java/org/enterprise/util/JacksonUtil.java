@@ -59,7 +59,7 @@ public class JacksonUtil {
      * @return
      */
     public static <T> T string2Collection(String str, Class<?> collectionClass, Class<?> elementClass) {
-        if(str == null || "".equals(str) || collectionClass == null || elementClass == null){
+        if (str == null || "".equals(str) || collectionClass == null || elementClass == null) {
             return null;
         }
 

@@ -1,9 +1,14 @@
 package org.enterprise.domian.constants;
 
+import org.enterprise.api.request.DscheduleRequest;
 import org.enterprise.infrastructure.ProductAbstractDelayQueue;
+import org.enterprise.infrastructure.config.BusinessConfig;
 import org.enterprise.infrastructure.mysql.adapter.MysqlDelayAdapter;
 import org.enterprise.infrastructure.rabbitmq.adapter.RabbitMqDelayAdapter;
 import org.enterprise.infrastructure.redis.adapter.RedisDelayAdapter;
+import org.enterprise.infrastructure.utils.spring.SpringContextUtil;
+
+import java.util.Map;
 
 /**
  * @author: albert.chen
@@ -25,12 +30,17 @@ public enum DelayDealWayEnum {
         this.productAbstractDelayQueue = productAbstractDelayQueue;
     }
 
-    public static ProductAbstractDelayQueue getAbstractDelayQueue(Integer way) {
-        for (DelayDealWayEnum value : DelayDealWayEnum.values()) {
-            if (value.getWay().equals(way)) {
-                return value.productAbstractDelayQueue;
-            }
+    public static ProductAbstractDelayQueue getAbstractDelayQueue(DscheduleRequest dscheduleRequest) {
+        Map<String, Object> extraParam = dscheduleRequest.getExtraParam();
+        if (extraParam != null && extraParam.get("windows_package_delay_time") != null) {
+            return REDIS.productAbstractDelayQueue;
         }
+
+        BusinessConfig businessConfig = SpringContextUtil.getBean(BusinessConfig.class);
+        if (businessConfig.getDelayMessageDemotion()) {
+            return REDIS.productAbstractDelayQueue;
+        }
+
         return RABBITMQ.productAbstractDelayQueue;
     }
 

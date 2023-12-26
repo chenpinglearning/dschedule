@@ -33,13 +33,6 @@ public class KhronosBizConstant {
     public static final Integer WINDOWS_PACKAGE_SIMPLE_SLOT_NUM = 100;
 
 
-
-
-
-
-
-
-
     /**
      *
      */

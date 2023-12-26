@@ -2,7 +2,6 @@ package org.enterprise;
 
 import org.enterprise.api.DscheduleEventManage;
 import org.enterprise.api.request.DscheduleRequest;
-import org.enterprise.constants.DscheduleType;
 import org.enterprise.constants.EnvironmentConfig;
 import org.enterprise.constants.ProtocolType;
 import org.junit.Test;
@@ -27,16 +26,15 @@ public class AppTest {
         properties.put(EnvironmentConfig.HTTP_HOST, "https://localhost:8888");
 
         DscheduleRequest dscheduleRequest = new DscheduleRequest();
-        dscheduleRequest.setDelayTime(10);
-        dscheduleRequest.setDelayType(DscheduleType.RABBITMQ.getType());
+        dscheduleRequest.setDelayTime(10000);
         dscheduleRequest.setProtocolType(ProtocolType.HTTP.getProtocol());
-        dscheduleRequest.setAppId("you system name");
-        dscheduleRequest.setSeqId("can search delay seqId");
-        dscheduleRequest.setScene("you business scene");
+        dscheduleRequest.setAppId("test");
+        dscheduleRequest.setSeqId(String.valueOf(System.currentTimeMillis()));
+        dscheduleRequest.setScene("default");
 
         Map<String, Object> param = new HashMap<>();
         param.put("other", "other");
-        param.put("business_id", "can search delay businessId");
+        param.put("business_id", "123123213123123");
         dscheduleRequest.setParam(param);
 
         Map<String, Object> extraParam = new HashMap<>();
@@ -45,6 +43,11 @@ public class AppTest {
         dscheduleRequest.setExtraParam(extraParam);
 
         DscheduleEventManage.pushDelayMessage(dscheduleRequest);
+        try {
+            Thread.sleep(20000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 
 
@@ -54,16 +57,15 @@ public class AppTest {
         properties.put(EnvironmentConfig.HTTP_HOST, "https://localhost:8888");
 
         DscheduleRequest dscheduleRequest = new DscheduleRequest();
-        dscheduleRequest.setDelayTime(10);
-        dscheduleRequest.setDelayType(DscheduleType.REDIS.getType());
+        dscheduleRequest.setDelayTime(5000);
         dscheduleRequest.setProtocolType(ProtocolType.HTTP.getProtocol());
-        dscheduleRequest.setAppId("you system name");
-        dscheduleRequest.setSeqId("can search delay seqId");
-        dscheduleRequest.setScene("you business scene");
+        dscheduleRequest.setAppId("test");
+        dscheduleRequest.setSeqId(String.valueOf(System.currentTimeMillis()));
+        dscheduleRequest.setScene("default");
 
         Map<String, Object> param = new HashMap<>();
         param.put("other", "other");
-        param.put("business_id", "can search delay businessId");
+        param.put("business_id", "123123213123123");
         dscheduleRequest.setParam(param);
 
         Map<String, Object> extraParam = new HashMap<>();

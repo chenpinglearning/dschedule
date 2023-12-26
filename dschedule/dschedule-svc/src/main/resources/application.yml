@@ -40,7 +40,9 @@ xxl:
 callBack:
   way: http
 
-
+delay:
+  message:
+    demotion: false
 
 
 
@@ -54,9 +56,9 @@ spring:
     username: root
     password: 123456
   rabbitmq:
-    addresses: localhost:8080
-    username: admin
-    password: 123456
+    addresses: 127.0.0.1:5672
+    username: guest
+    password: guest
     virtual-host: /
 
 

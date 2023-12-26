@@ -33,7 +33,6 @@ public class MysqlDelayAdapter extends ProductAbstractDelayQueue {
         delayMessage.setDelayTime(dscheduleRequest.getDelayTime());
         delayMessage.setExpireTime(System.currentTimeMillis() + dscheduleRequest.getDelayTime() * 1000);
         delayMessage.setDealStatus(DealStatus.NOT_DEAL.getStatus());
-        delayMessage.setDelayType(dscheduleRequest.getDelayType());
         delayMessage.setRetryTime(0);
         delayMessage.setSeqId(dscheduleRequest.getSeqId());
         delayMessage.setBusinessParam(JacksonUtil.obj2String(dscheduleRequest.getParam()));
