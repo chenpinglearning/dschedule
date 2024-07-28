@@ -16,10 +16,10 @@
     </appender>
 
     <logger name="org.enterprise">
-        <level value="INFO"/>
+        <level value="info"/>
     </logger>
 
-    <root level="INFO">
+    <root level="info">
         <appender-ref ref="async"/>
     </root>
 </configuration>

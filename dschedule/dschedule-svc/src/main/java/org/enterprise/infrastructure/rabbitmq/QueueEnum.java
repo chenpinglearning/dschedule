@@ -13,11 +13,11 @@ public enum QueueEnum {
     /**
      * name
      */
-    private String name;
+    private final String name;
     /**
      * routingKey
      */
-    private String routingKey;
+    private final String routingKey;
 
     QueueEnum(String name, String routingKey) {
         this.name = name;

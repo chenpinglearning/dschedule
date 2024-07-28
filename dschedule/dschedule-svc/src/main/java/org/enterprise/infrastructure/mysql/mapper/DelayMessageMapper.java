@@ -9,5 +9,7 @@ import org.enterprise.domian.entity.DelayMessage;
  * @create: 2023-12-01
  * @description:
  */
+
 public interface DelayMessageMapper extends BaseMapper<DelayMessage> {
+
 }

@@ -8,7 +8,7 @@ package org.enterprise.infrastructure.rabbitmq;
 public enum ExchangeEnum {
     DELAY_EXCHANGE("dschedule.deply.message.exchange");
 
-    private String value;
+    private final String value;
 
     ExchangeEnum(String value) {
         this.value = value;

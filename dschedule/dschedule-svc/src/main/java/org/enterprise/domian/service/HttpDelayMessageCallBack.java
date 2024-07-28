@@ -2,6 +2,7 @@ package org.enterprise.domian.service;
 
 
 import org.enterprise.api.request.DscheduleRequest;
+import org.enterprise.constants.Constant;
 import org.enterprise.protocol.http.HttpClientManage;
 import org.enterprise.util.JacksonUtil;
 
@@ -14,8 +15,9 @@ public class HttpDelayMessageCallBack extends DelayMessageCallBackService {
 
     @Override
     protected void callBackDelayMessage(DscheduleRequest dscheduleRequest) throws Exception {
-        String callBackUrl = (String) dscheduleRequest.getExtraParam().get("call_back_url");
+        String callBackUrl = (String) dscheduleRequest.getExtraParam().get(Constant.CallBackUrl);
         HttpClientManage.postJson(callBackUrl, JacksonUtil.obj2String(dscheduleRequest));
+        super.callBackDelayMessage(dscheduleRequest);
     }
 
 }

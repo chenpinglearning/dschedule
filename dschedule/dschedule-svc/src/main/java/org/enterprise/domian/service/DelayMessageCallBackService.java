@@ -2,6 +2,8 @@ package org.enterprise.domian.service;
 
 import lombok.extern.slf4j.Slf4j;
 import org.enterprise.api.request.DscheduleRequest;
+import org.enterprise.infrastructure.mysql.adapter.MysqlDelayAdapter;
+import org.enterprise.infrastructure.utils.spring.SpringContextUtil;
 
 /**
  * @author: albert.chen
@@ -18,9 +20,7 @@ public class DelayMessageCallBackService {
 
             callBackDelayMessage(dscheduleRequest);
         } catch (Exception e) {
-            log.error("回掉延迟消息失败，原因为 {}", dscheduleRequest.getSeqId(), e);
-
-            throw e;
+            callBackDelayMessageFail(dscheduleRequest);
         } finally {
             afterCallBackDelayMessage(dscheduleRequest);
         }
@@ -35,7 +35,17 @@ public class DelayMessageCallBackService {
 
 
     protected void callBackDelayMessage(DscheduleRequest dscheduleRequest) throws Exception {
+        log.error("callBack delay message success {}", dscheduleRequest.getSeqId());
 
+        MysqlDelayAdapter mysqlDelayAdapter = SpringContextUtil.getBean(MysqlDelayAdapter.class);
+        mysqlDelayAdapter.updateSuccessDelayMessage(dscheduleRequest.getSeqId());
+    }
+
+    protected void callBackDelayMessageFail(DscheduleRequest dscheduleRequest) throws Exception {
+        log.error("callBack delay message fail {}", dscheduleRequest.getSeqId());
+
+        MysqlDelayAdapter mysqlDelayAdapter = SpringContextUtil.getBean(MysqlDelayAdapter.class);
+        mysqlDelayAdapter.updateFailDelayMessage(dscheduleRequest.getSeqId());
     }
 
 

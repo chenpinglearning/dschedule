@@ -2,79 +2,74 @@ package org.enterprise.infrastructure.mysql.adapter;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import lombok.extern.slf4j.Slf4j;
 import org.enterprise.api.request.DscheduleRequest;
+import org.enterprise.constants.Constant;
 import org.enterprise.domian.constants.DealStatus;
 import org.enterprise.domian.entity.DelayMessage;
 import org.enterprise.infrastructure.ProductAbstractDelayQueue;
 import org.enterprise.infrastructure.mysql.mapper.DelayMessageMapper;
-import org.enterprise.infrastructure.utils.spring.SpringContextUtil;
 import org.enterprise.util.JacksonUtil;
+import org.springframework.dao.DuplicateKeyException;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
 import java.util.Date;
 import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * @author: albert.chen
  * @create: 2023-12-01
  * @description:
  */
+@Slf4j
 @Component
 public class MysqlDelayAdapter extends ProductAbstractDelayQueue {
     @Resource
     private DelayMessageMapper delayMessageMapper;
 
 
-    public void save(DscheduleRequest dscheduleRequest) {
+    public boolean save(DscheduleRequest dscheduleRequest) {
         DelayMessage delayMessage = new DelayMessage();
         delayMessage.setAppId(dscheduleRequest.getAppId());
         delayMessage.setScene(dscheduleRequest.getScene());
         delayMessage.setDelayTime(dscheduleRequest.getDelayTime());
-        delayMessage.setExpireTime(System.currentTimeMillis() + dscheduleRequest.getDelayTime() * 1000);
+        delayMessage.setExpireTime(System.currentTimeMillis() + dscheduleRequest.getDelayTime());
         delayMessage.setDealStatus(DealStatus.NOT_DEAL.getStatus());
         delayMessage.setDelayType(dscheduleRequest.getDelayType());
         delayMessage.setRetryTime(0);
         delayMessage.setSeqId(dscheduleRequest.getSeqId());
         delayMessage.setBusinessParam(JacksonUtil.obj2String(dscheduleRequest.getParam()));
         delayMessage.setExtraParam(JacksonUtil.obj2String(dscheduleRequest.getExtraParam()));
+        delayMessage.setRetryIntervalTime(delayMessage.getExpireTime());
         delayMessage.setCreateTime(new Date());
         delayMessage.setUpdateTime(new Date());
 
         if (dscheduleRequest.getExtraParam() != null) {
-            delayMessage.setWindowPackageTime((String) dscheduleRequest.getExtraParam().get("windows_package"));
-            delayMessage.setCallBackUrl((String) dscheduleRequest.getExtraParam().get("call_back_url"));
-            delayMessage.setGreyVersion((String) dscheduleRequest.getExtraParam().get("grey_version"));
+            delayMessage.setWindowPackageTime((String) dscheduleRequest.getExtraParam().get(Constant.WindowsPackageTime));
+            delayMessage.setCallBackUrl((String) dscheduleRequest.getExtraParam().get(Constant.CallBackUrl));
+            delayMessage.setGreyVersion((String) dscheduleRequest.getExtraParam().get(Constant.GreyVersion));
         }
 
-        delayMessageMapper.insert(delayMessage);
-    }
+        try {
+            delayMessageMapper.insert(delayMessage);
+        } catch (DuplicateKeyException e) {
+            log.error("seqId retry，please check {}", dscheduleRequest.getSeqId());
+            return false;
+        } catch (Exception e) {
+            throw e;
+        }
 
-
-    public List<DelayMessage> queryNotDealDelayMessages(int size) {
-        QueryWrapper<DelayMessage> queryWrapper = new QueryWrapper<>();
-
-        queryWrapper.le(Boolean.TRUE, DelayMessage.DelayMessageFiled.expireTime, System.currentTimeMillis());
-        queryWrapper.eq(DelayMessage.DelayMessageFiled.dealStatus, DealStatus.NOT_DEAL.getStatus());
-        Page<DelayMessage> page = delayMessageMapper.selectPage(Page.of(1, size), queryWrapper);
-        List<DelayMessage> records = page.getRecords();
-        List<Long> ids = records.stream().map(DelayMessage::getId).collect(Collectors.toList());
-
-        //update dealIng
-        QueryWrapper<DelayMessage> updateWrapper = new QueryWrapper<>();
-        updateWrapper.in(DelayMessage.DelayMessageFiled.id, ids);
-        DelayMessage delayMessage = new DelayMessage();
-        delayMessage.setDealStatus(DealStatus.DEAL_ING.getStatus());
-        delayMessageMapper.update(delayMessage, updateWrapper);
-
-        return records;
+        return true;
     }
 
 
     public List<DelayMessage> queryDealFailDelayMessages(int size) {
         QueryWrapper<DelayMessage> queryWrapper = new QueryWrapper<>();
+
+        queryWrapper.le(Boolean.TRUE, DelayMessage.DelayMessageFiled.retryIntervalTime, System.currentTimeMillis());
         queryWrapper.eq(DelayMessage.DelayMessageFiled.dealStatus, DealStatus.DEAL_FAIL.getStatus());
+        queryWrapper.le(Boolean.TRUE, DelayMessage.DelayMessageFiled.delayTime, 3);
 
         Page<DelayMessage> page = delayMessageMapper.selectPage(Page.of(1, size), queryWrapper);
         return page.getRecords();
@@ -82,10 +77,31 @@ public class MysqlDelayAdapter extends ProductAbstractDelayQueue {
 
 
     public void updateFailDelayMessage(String seqId) {
+        DelayMessage delayMessage = queryDelayMessage(seqId);
+        if (delayMessage == null) {
+            log.error("delay message not found {}", seqId);
+            return;
+        }
+
+        delayMessage.setRetryTime(delayMessage.getRetryTime() + 1);
+        delayMessage.setDealStatus(DealStatus.DEAL_FAIL.getStatus());
+        delayMessage.setRetryIntervalTime(System.currentTimeMillis() + Constant.retryIntervalTimes.get(delayMessage.getRetryTime() - 1));
+        delayMessage.setUpdateTime(new Date());
+        delayMessageMapper.updateById(delayMessage);
+    }
+
+
+    public DelayMessage queryDelayMessage(String seqId) {
+        QueryWrapper<DelayMessage> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq(DelayMessage.DelayMessageFiled.seqId, seqId);
+        return delayMessageMapper.selectOne(queryWrapper);
+    }
+
+    public void updateSuccessDelayMessage(String seqId) {
         QueryWrapper<DelayMessage> updateWrapper = new QueryWrapper<>();
         updateWrapper.in(DelayMessage.DelayMessageFiled.seqId, seqId);
         DelayMessage delayMessage = new DelayMessage();
-        delayMessage.setDealStatus(DealStatus.DEAL_FAIL.getStatus());
+        delayMessage.setDealStatus(DealStatus.DEAL_SUCCESS.getStatus());
 
         delayMessageMapper.update(delayMessage, updateWrapper);
     }

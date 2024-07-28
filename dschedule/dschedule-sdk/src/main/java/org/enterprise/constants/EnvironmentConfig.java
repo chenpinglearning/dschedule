@@ -7,7 +7,7 @@ package org.enterprise.constants;
  */
 public class EnvironmentConfig {
     //httpServer
-    public static String HTTP_URL = "/dschedule/delay/message/request";
+    public static String HTTP_URL = "/delay/message/save";
     public static String HTTP_HOST = "localhost:8080";
 
     //kafka-product

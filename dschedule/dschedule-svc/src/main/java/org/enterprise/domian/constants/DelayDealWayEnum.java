@@ -11,20 +11,20 @@ import org.enterprise.infrastructure.redis.adapter.RedisDelayAdapter;
  * @description:
  */
 public enum DelayDealWayEnum {
-    RABBITMQ(0, "rabbitMq", new RabbitMqDelayAdapter()),
-    XXL_JOB_MYSQL(1, "xxl_job_mysql", new MysqlDelayAdapter()),
-    REDIS(2, "redis", new RedisDelayAdapter());
+    RABBITMQ(0, "rabbitMq", RabbitMqDelayAdapter.class),
+    REDIS(1, "redis",  RedisDelayAdapter.class);
 
-    private Integer way;
-    private String msg;
-    private ProductAbstractDelayQueue productAbstractDelayQueue;
-    DelayDealWayEnum(Integer way, String msg, ProductAbstractDelayQueue productAbstractDelayQueue) {
+    private final Integer way;
+    private final String msg;
+    private final Class productAbstractDelayQueue;
+
+    DelayDealWayEnum(Integer way, String msg, Class productAbstractDelayQueue) {
         this.way = way;
         this.msg = msg;
         this.productAbstractDelayQueue = productAbstractDelayQueue;
     }
 
-    public static ProductAbstractDelayQueue getAbstractDelayQueue(Integer way) {
+    public static Class getAbstractDelayQueue(Integer way) {
         for (DelayDealWayEnum value : DelayDealWayEnum.values()) {
             if (value.getWay().equals(way)) {
                 return value.productAbstractDelayQueue;

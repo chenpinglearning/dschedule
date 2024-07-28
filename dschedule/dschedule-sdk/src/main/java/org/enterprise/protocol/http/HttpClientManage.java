@@ -35,7 +35,7 @@ public class HttpClientManage {
         // config timeout
         RequestConfig requestConfig = RequestConfig.custom()
                 .setConnectionRequestTimeout(1000, TimeUnit.MILLISECONDS)
-                .setResponseTimeout(500, TimeUnit.MILLISECONDS)
+                .setResponseTimeout(1000, TimeUnit.MILLISECONDS)
                 .build();
 
         //retry strategy ，default retry time=1，retry internal=1s

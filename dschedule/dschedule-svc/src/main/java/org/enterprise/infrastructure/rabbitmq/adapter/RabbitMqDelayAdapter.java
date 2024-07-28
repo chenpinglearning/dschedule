@@ -26,6 +26,8 @@ import javax.annotation.Resource;
 public class RabbitMqDelayAdapter extends ProductAbstractDelayQueue {
     @Resource
     private CallBackMessageManager callBackMessageManager;
+    @Resource
+    private RabbitTemplate rabbitTemplate;
 
     @Override
     public void sendDelayMessage(DscheduleRequest dscheduleRequest) {
@@ -34,7 +36,6 @@ public class RabbitMqDelayAdapter extends ProductAbstractDelayQueue {
         messageProperties.setDelay(dscheduleRequest.getDelayTime());
         Message message = new Message(JacksonUtil.obj2String(dscheduleRequest).getBytes(), messageProperties);
 
-        RabbitTemplate rabbitTemplate = SpringContextUtil.getBean(RabbitTemplate.class);
         rabbitTemplate.send(ExchangeEnum.DELAY_EXCHANGE.getValue(), QueueEnum.DELAY_MESSAGE_QUEUE.getRoutingKey(), message);
     }
 

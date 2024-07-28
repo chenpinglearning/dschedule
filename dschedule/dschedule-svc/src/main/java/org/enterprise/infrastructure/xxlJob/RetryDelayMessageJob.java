@@ -5,6 +5,7 @@ import com.xxl.job.core.handler.annotation.XxlJob;
 import lombok.extern.slf4j.Slf4j;
 import org.enterprise.api.request.DscheduleRequest;
 import org.enterprise.domian.entity.DelayMessage;
+import org.enterprise.domian.service.CallBackMessageManager;
 import org.enterprise.infrastructure.mysql.adapter.MysqlDelayAdapter;
 import org.enterprise.util.JacksonUtil;
 import org.springframework.stereotype.Component;
@@ -26,6 +27,8 @@ import java.util.Optional;
 public class RetryDelayMessageJob {
     @Resource
     private MysqlDelayAdapter delayMessageMysqlAdapter;
+    @Resource
+    private CallBackMessageManager callBackMessageManager;
 
 
     /**
@@ -46,7 +49,9 @@ public class RetryDelayMessageJob {
         }
 
         List<DscheduleRequest> dscheduleRequests = tranDscheduleRequests(delayMessages);
-
+        for (DscheduleRequest dscheduleRequest : dscheduleRequests) {
+            callBackMessageManager.callBackDelayMessage(dscheduleRequest);
+        }
     }
 
 
@@ -54,6 +59,9 @@ public class RetryDelayMessageJob {
         List<DscheduleRequest> list = new ArrayList<>();
         for (DelayMessage delayMessage : delayMessages) {
             DscheduleRequest dscheduleRequest = new DscheduleRequest();
+            dscheduleRequest.setDelayTime(delayMessage.getDelayTime());
+            dscheduleRequest.setDelayType(delayMessage.getDelayType());
+
             dscheduleRequest.setAppId(delayMessage.getAppId());
             dscheduleRequest.setSeqId(delayMessage.getSeqId());
             dscheduleRequest.setParam(JacksonUtil.string2Obj(delayMessage.getBusinessParam(), Map.class));

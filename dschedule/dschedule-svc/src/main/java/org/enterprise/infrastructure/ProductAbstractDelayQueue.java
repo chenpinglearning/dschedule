@@ -8,7 +8,7 @@ import org.enterprise.api.request.DscheduleRequest;
  * @description:
  */
 public class ProductAbstractDelayQueue {
-    public void sendDelayMessage(DscheduleRequest dscheduleRequest) {
+    public void sendDelayMessage(DscheduleRequest dscheduleRequest) throws Exception {
 
     }
 

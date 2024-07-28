@@ -12,7 +12,7 @@ import java.io.IOException;
 public class JacksonUtil {
     private static final Logger logger = LoggerFactory.getLogger(JacksonUtil.class);
 
-    private static ObjectMapper objectMapper = new ObjectMapper();
+    private static final ObjectMapper objectMapper = new ObjectMapper();
 
     static {
         //ObjectMapper忽略多余字段

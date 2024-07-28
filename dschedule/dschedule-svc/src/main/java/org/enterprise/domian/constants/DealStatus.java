@@ -7,12 +7,11 @@ package org.enterprise.domian.constants;
  */
 public enum DealStatus {
     NOT_DEAL(0, "未处理"),
-    DEAL_ING(1, "处理中"),
-    DEAL_SUCCESS(2, "处理成功"),
+    DEAL_SUCCESS(1, "处理成功"),
     DEAL_FAIL(-1, "处理失败");
 
-    private int status;
-    private String msg;
+    private final int status;
+    private final String msg;
 
     DealStatus(int status, String msg) {
         this.status = status;

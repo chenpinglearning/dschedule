@@ -1,6 +1,5 @@
 package org.enterprise.api.request;
 
-import com.sun.istack.internal.NotNull;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -14,32 +13,25 @@ public class DscheduleRequest {
     /**
      * ms
      */
-    @NotNull
     private Integer delayTime;
     /**
      * DscheduleType -- enum DscheduleType
      */
     private Integer delayType;
     /**
-     * protocolType -- enum ProtocolType
-     */
-    private Integer protocolType;
-    /**
      * applicationId
      */
-    @NotNull
     private String appId;
     /**
      * requestId
      */
-    @NotNull
     private String seqId;
     /**
      * delay business scene
      */
     private String scene = "default";
     /**
-     * business param(callback、view)
+     * business param
      * business_id = xx
      */
     private Map<String, Object> param = new HashMap<>();
@@ -66,14 +58,6 @@ public class DscheduleRequest {
 
     public void setDelayType(Integer delayType) {
         this.delayType = delayType;
-    }
-
-    public Integer getProtocolType() {
-        return protocolType;
-    }
-
-    public void setProtocolType(Integer protocolType) {
-        this.protocolType = protocolType;
     }
 
     public String getAppId() {
@@ -122,7 +106,6 @@ public class DscheduleRequest {
         return "DscheduleRequest{" +
                 "delayTime=" + delayTime +
                 ", delayType=" + delayType +
-                ", protocolType=" + protocolType +
                 ", appId='" + appId + '\'' +
                 ", seqId='" + seqId + '\'' +
                 ", scene='" + scene + '\'' +

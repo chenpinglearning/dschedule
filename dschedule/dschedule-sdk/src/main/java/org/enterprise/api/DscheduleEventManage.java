@@ -2,10 +2,10 @@ package org.enterprise.api;
 
 import org.enterprise.api.request.DscheduleRequest;
 import org.enterprise.api.response.DscheduleResponse;
+import org.enterprise.constants.Constant;
 import org.enterprise.constants.DscheduleType;
 import org.enterprise.constants.ProtocolType;
 import org.enterprise.protocol.ProducerHandler;
-import org.enterprise.util.DscheduleThreadPool;
 import org.enterprise.util.JacksonUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -21,10 +21,8 @@ public class DscheduleEventManage {
     public static final Logger logger = LoggerFactory.getLogger(DscheduleEventManage.class);
 
 
-    public static void pushDelayMessage(DscheduleRequest dscheduleRequest) {
-        DscheduleThreadPool.ProductDscheduleThreadpool.execute(() -> {
-            startPushDelayMessage(dscheduleRequest);
-        });
+    public static DscheduleResponse pushDelayMessage(DscheduleRequest dscheduleRequest) {
+        return startPushDelayMessage(dscheduleRequest);
     }
 
 
@@ -45,12 +43,8 @@ public class DscheduleEventManage {
             dscheduleRequest.setDelayType(DscheduleType.RABBITMQ.getType());
         }
 
-        if (dscheduleRequest.getProtocolType() == null) {
-            dscheduleRequest.setProtocolType(ProtocolType.HTTP.getProtocol());
-        }
-
         Map<String, Object> extraParam = dscheduleRequest.getExtraParam();
-        extraParam.put("send_time", System.currentTimeMillis());
+        extraParam.put(Constant.SendTime, System.currentTimeMillis());
 
         // before sendMessage
         pushMessageBefore(dscheduleRequest);
@@ -73,12 +67,11 @@ public class DscheduleEventManage {
 
 
     private static boolean checkParam(DscheduleRequest dscheduleRequest) {
-        if (dscheduleRequest == null || dscheduleRequest.getDelayTime() < System.currentTimeMillis()
-                || dscheduleRequest.getAppId() == null || dscheduleRequest.getSeqId() == null) {
-            return false;
-        }
-
-        return true;
+        return dscheduleRequest != null && dscheduleRequest.getDelayTime() != null
+                && dscheduleRequest.getAppId() != null && dscheduleRequest.getSeqId() != null
+                && dscheduleRequest.getExtraParam() != null && dscheduleRequest.getExtraParam().get(Constant.CallBackUrl) != null
+                && (((String) dscheduleRequest.getExtraParam().get(Constant.CallBackUrl)).contains(Constant.http)
+                || ((String) dscheduleRequest.getExtraParam().get(Constant.CallBackUrl)).contains(Constant.kafka));
     }
 
 
@@ -87,7 +80,7 @@ public class DscheduleEventManage {
     }
 
     protected static DscheduleRequest pushMessageIng(DscheduleRequest dscheduleRequest) throws Exception {
-        ProducerHandler producerHandler = ProtocolType.getCommunicationProtocol(dscheduleRequest.getProtocolType());
+        ProducerHandler producerHandler = ProtocolType.getCommunicationProtocol(ProtocolType.HTTP.getProtocol());
         if (producerHandler == null) {
             throw new Exception("not found communicationProtocol");
         }

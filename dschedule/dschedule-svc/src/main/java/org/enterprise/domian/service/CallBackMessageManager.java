@@ -1,9 +1,11 @@
 package org.enterprise.domian.service;
 
+import lombok.extern.slf4j.Slf4j;
 import org.enterprise.api.request.DscheduleRequest;
+import org.enterprise.constants.Constant;
 import org.enterprise.domian.constants.CallWayEnum;
 import org.enterprise.infrastructure.mysql.adapter.MysqlDelayAdapter;
-import org.springframework.beans.factory.annotation.Value;
+import org.enterprise.util.JacksonUtil;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
@@ -13,25 +15,27 @@ import javax.annotation.Resource;
  * @create: 2023-12-06
  * @description:
  */
+@Slf4j
 @Component
 public class CallBackMessageManager {
-    @Value("callBack.way")
-    private String callBackWay;
     @Resource
     private MysqlDelayAdapter mysqlDelayAdapter;
 
 
     public void callBackDelayMessage(DscheduleRequest dscheduleRequest) {
+        String callBackWay = null;
+        String callBackUrl = (String) dscheduleRequest.getExtraParam().get(Constant.CallBackUrl);
+        if (callBackUrl.startsWith(Constant.http) || callBackUrl.startsWith(Constant.https)) {
+            callBackWay = Constant.http;
+        } else {
+            callBackWay = Constant.kafka;
+        }
+
         DelayMessageCallBackService delayMessageCallBackService = CallWayEnum.getDelayMessageCallBackService(callBackWay);
-        Boolean delayResult = Boolean.TRUE;
         try {
             delayMessageCallBackService.callBack(dscheduleRequest);
         } catch (Exception e) {
-            delayResult = Boolean.FALSE;
-        }
-
-        if (Boolean.FALSE.equals(delayResult)) {
-            mysqlDelayAdapter.updateFailDelayMessage(dscheduleRequest.getSeqId());
+            log.error("callBack message deal error {}", JacksonUtil.obj2String(dscheduleRequest));
         }
     }
 

@@ -13,9 +13,10 @@ public enum CallWayEnum {
     RABBITMQ(0, "http", new HttpDelayMessageCallBack()),
     KAFKA(1, "kafka", new KafkaDelayMessageCallBack());
 
-    private Integer way;
-    private String msg;
-    private DelayMessageCallBackService delayMessageCallBackService;
+    private final Integer way;
+    private final String msg;
+    private final DelayMessageCallBackService delayMessageCallBackService;
+
     CallWayEnum(Integer way, String msg, DelayMessageCallBackService delayMessageCallBackService) {
         this.way = way;
         this.msg = msg;

@@ -3,7 +3,9 @@ package org.enterprise.application;
 import lombok.extern.slf4j.Slf4j;
 import org.enterprise.api.request.DscheduleRequest;
 import org.enterprise.domian.constants.DelayDealWayEnum;
+import org.enterprise.infrastructure.ProductAbstractDelayQueue;
 import org.enterprise.infrastructure.mysql.adapter.MysqlDelayAdapter;
+import org.enterprise.infrastructure.utils.spring.SpringContextUtil;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
@@ -20,16 +22,19 @@ public class DelayMessageApplication {
     private MysqlDelayAdapter delayMessageMysqlAdapter;
 
 
-    public void saveToDelayQueue(DscheduleRequest dscheduleRequest) {
+    public void saveToDelayQueue(DscheduleRequest dscheduleRequest) throws Exception {
         log.info("save delay message to queue {}", dscheduleRequest.getSeqId());
         /**
-         * qps very high need deal
+         * qps very high need deal, for example ,don't save to mysql
          */
-        delayMessageMysqlAdapter.save(dscheduleRequest);
+        if (!delayMessageMysqlAdapter.save(dscheduleRequest)) {
+            return;
+        }
 
         //send to delay queue
         Integer delayType = dscheduleRequest.getDelayType();
-        DelayDealWayEnum.getAbstractDelayQueue(delayType).sendDelayMessage(dscheduleRequest);
+        ProductAbstractDelayQueue productAbstractDelayQueue = (ProductAbstractDelayQueue) SpringContextUtil.getBean(DelayDealWayEnum.getAbstractDelayQueue(delayType));
+        productAbstractDelayQueue.sendDelayMessage(dscheduleRequest);
     }
 
 
