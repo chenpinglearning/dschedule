@@ -32,7 +32,7 @@ public class TimeWheelTaskServiceImpl implements TimeWheelTaskService {
         Integer targetSlot = (currentSlot + (taskEntry.getDelay() / taskEntry.getWindowPackage())) % timeWheelConfig.getSimpleSlotNum();
         taskEntry.setSlot(targetSlot);
 
-        String key = TimeWheelConstant.TIME_WHEEL.concat(String.valueOf(targetSlot));
+        String key = TimeWheelConstant.TIME_WHEEL.concat(taskEntry.getScene()).concat(TimeWheelConstant.SPLIT).concat(String.valueOf(targetSlot));
         log.info("addTaskToWheel key vale:{} {} ", key, JacksonUtil.obj2String(taskEntry));
         timeWheelDao.rightPush(key, taskEntry);
     }
@@ -49,10 +49,10 @@ public class TimeWheelTaskServiceImpl implements TimeWheelTaskService {
             Integer currentSlot = getCurrentSlot(scene);
             currentSlot = (currentSlot + 1) % timeWheelConfig.getSimpleSlotNum();
 
-            timeWheelDao.setSlot(TimeWheelConstant.TIME_WHEEL, currentSlot);
+            timeWheelDao.setSlot(TimeWheelConstant.TIME_WHEEL.concat(scene), currentSlot);
 
             Long takeTime = System.currentTimeMillis() - start;
-            log.debug("turn task time {}", takeTime);
+            log.info("turn task time {} , currentSlot {}", takeTime ,currentSlot);
         } catch (Exception e) {
             log.error("turnTheTimeWheel error.", e);
         }
@@ -63,9 +63,11 @@ public class TimeWheelTaskServiceImpl implements TimeWheelTaskService {
         Long start = System.currentTimeMillis();
         try {
             Integer slot = getCurrentSlot(scene);
-            String key = TimeWheelConstant.TIME_WHEEL.concat(String.valueOf(slot));
-            //槽位数量
+            String key = TimeWheelConstant.TIME_WHEEL.concat(scene).concat(TimeWheelConstant.SPLIT).concat(String.valueOf(slot));
             Integer slotSize = timeWheelDao.getSlotSize(key);
+
+            log.info("consumeTimeWheel key->{} , slotSize-> {}", key , slotSize);
+
             if (slotSize == 0) {
                 return;
             }

@@ -25,7 +25,7 @@ public class TimeWheelConfig {
      */
     private Map<String, Integer> scenes;
 
-    @Value("${time.wheel.scene:{\"default\":20000}}")
+    @Value("${time.wheel.scene:{\"default\":10000}}")
     public void setScenes(String scenes) {
         this.scenes = JacksonUtil.string2Obj(scenes , Map.class);
     }

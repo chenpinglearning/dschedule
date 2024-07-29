@@ -10,6 +10,7 @@ import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
@@ -27,11 +28,26 @@ public class TurnTimeWheelTask implements ApplicationRunner {
     @Value("${time.wheel.turn.time.period:50}")
     private Long period;
 
+    private Map<String , Boolean> start = new ConcurrentHashMap<>();
 
     @Override
     public void run(ApplicationArguments args) throws Exception {
+        ScheduledThreadPoolExecutor scheduledThreadPoolExecutor = new ScheduledThreadPoolExecutor(1);
+        scheduledThreadPoolExecutor.scheduleAtFixedRate(() -> {
+                    startTurnTimeWheel();
+                }
+                , initialDelay, 1000, TimeUnit.MILLISECONDS);
+    }
+
+    private void startTurnTimeWheel() {
         TimeWheelConfig timeWheelConfig = SpringContextUtil.getBean(TimeWheelConfig.class);
         for (Map.Entry<String, Integer> scene : timeWheelConfig.getScenes().entrySet()) {
+            Boolean old = start.putIfAbsent(scene.getKey(), true);
+            if(old != null) {
+                continue;
+            }
+
+            log.info("startTurnTimeWheel:{}", scene.getKey());
             ScheduledThreadPoolExecutor scheduledThreadPoolExecutor = new ScheduledThreadPoolExecutor(1);
             scheduledThreadPoolExecutor.scheduleAtFixedRate(() -> {
                         timeWheelTaskService.turnTheTimeWheel(scene.getKey());

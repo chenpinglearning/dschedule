@@ -11,4 +11,10 @@ public class TimeWheelConstant {
 
 
     public static final String TIME_WHEEL_LOCK = "dschedule:timeWheel:lock";
+
+
+
+    public static final String SPLIT = ":";
 }
+
+

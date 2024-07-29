@@ -66,7 +66,7 @@ public class AppTest {
 
         Map<String, Object> extraParam = new HashMap<>();
         extraParam.put("call_back_url", "https://localhost:8080/delay/call/back");
-        extraParam.put("windows_package", 20000);
+        extraParam.put("windows_package", 10000);
         extraParam.put("grey_version", "v5337");
         dscheduleRequest.setExtraParam(extraParam);
 
