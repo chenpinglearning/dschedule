@@ -35,7 +35,7 @@ public class DelayMessageCallBackService {
 
 
     protected void callBackDelayMessage(DscheduleRequest dscheduleRequest) throws Exception {
-        log.error("callBack delay message success {}", dscheduleRequest.getSeqId());
+        log.info("callBack delay message success {}", dscheduleRequest.getSeqId());
 
         MysqlDelayAdapter mysqlDelayAdapter = SpringContextUtil.getBean(MysqlDelayAdapter.class);
         mysqlDelayAdapter.updateSuccessDelayMessage(dscheduleRequest.getSeqId());

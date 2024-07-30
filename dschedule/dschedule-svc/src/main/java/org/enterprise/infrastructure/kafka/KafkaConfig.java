@@ -23,7 +23,7 @@ public class KafkaConfig {
 
 
     @Bean
-    public KafkaProducer kafkaProducer() {
+    public KafkaProducer<String ,String> kafkaProducer() {
         Map<String, Object> props = new HashMap<>();
         props.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapServers);
         props.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, "org.apache.kafka.common.serialization.StringSerializer");

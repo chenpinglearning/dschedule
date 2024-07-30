@@ -5,7 +5,7 @@ server:
 open:
   rabbitMq: true
   redis: true
-  kafka: false
+  kafka: true
   xxlJob: false
 
 
@@ -17,7 +17,6 @@ redis:
 
 kafka:
   bootstrap-servers: localhost:9092
-  topic: dschedule_call_back_topic
 
 xxl:
   job:

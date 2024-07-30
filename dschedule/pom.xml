@@ -18,6 +18,7 @@
     <modules>
         <module>dschedule-sdk</module>
         <module>dschedule-svc</module>
+        <module>dschedule-admin</module>
     </modules>
 
     <name>dschedule</name>
