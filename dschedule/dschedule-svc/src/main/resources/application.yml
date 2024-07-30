@@ -6,7 +6,7 @@ open:
   rabbitMq: true
   redis: true
   kafka: true
-  xxlJob: false
+  xxlJob: true
 
 
 redis:
@@ -21,7 +21,10 @@ kafka:
 xxl:
   job:
     admin:
+      enable: true
       addresses: http://localhost:8080/xxl-job-admin
+      username: admin
+      password: 123456
     executor:
       appname: dschedule-svc
       port: 9999

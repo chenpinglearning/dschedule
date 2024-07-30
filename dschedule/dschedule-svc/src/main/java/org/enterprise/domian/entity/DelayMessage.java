@@ -45,7 +45,7 @@ public class DelayMessage {
     public static class DelayMessageFiled {
         public static String id = "id";
         public static String dealStatus = "deal_status";
-        public static String delayTime = "delay_time";
+        public static String retryTime = "retry_time";
         public static String retryIntervalTime = "retry_interval_time";
         public static String appId = "app_id";
         public static String scene = "scene";

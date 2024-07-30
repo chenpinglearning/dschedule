@@ -64,12 +64,23 @@ public class MysqlDelayAdapter extends ProductAbstractDelayQueue {
     }
 
 
+
+    public List<DelayMessage> queryDealMoreTwentySecondDelayMessages(int size) {
+        QueryWrapper<DelayMessage> queryWrapper = new QueryWrapper<>();
+
+        queryWrapper.le(Boolean.TRUE, DelayMessage.DelayMessageFiled.retryIntervalTime, System.currentTimeMillis() + 20000);
+        queryWrapper.eq(DelayMessage.DelayMessageFiled.dealStatus, DealStatus.NOT_DEAL.getStatus());
+
+        Page<DelayMessage> page = delayMessageMapper.selectPage(Page.of(1, size), queryWrapper);
+        return page.getRecords();
+    }
+
     public List<DelayMessage> queryDealFailDelayMessages(int size) {
         QueryWrapper<DelayMessage> queryWrapper = new QueryWrapper<>();
 
         queryWrapper.le(Boolean.TRUE, DelayMessage.DelayMessageFiled.retryIntervalTime, System.currentTimeMillis());
         queryWrapper.eq(DelayMessage.DelayMessageFiled.dealStatus, DealStatus.DEAL_FAIL.getStatus());
-        queryWrapper.le(Boolean.TRUE, DelayMessage.DelayMessageFiled.delayTime, 3);
+        queryWrapper.le(Boolean.TRUE, DelayMessage.DelayMessageFiled.retryTime, 3);
 
         Page<DelayMessage> page = delayMessageMapper.selectPage(Page.of(1, size), queryWrapper);
         return page.getRecords();
