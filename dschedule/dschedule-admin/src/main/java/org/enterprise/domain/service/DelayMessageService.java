@@ -6,4 +6,10 @@ import org.enterprise.application.entrace.response.DelayMessageListResult;
 public interface DelayMessageService {
 
     DelayMessageListResult queryDealMessagesLists(QueryDelayMessageRequest request);
+
+
+    void retryFailedMessages(String seqId);
+
+
+    void retryAllFailedMessages();
 }

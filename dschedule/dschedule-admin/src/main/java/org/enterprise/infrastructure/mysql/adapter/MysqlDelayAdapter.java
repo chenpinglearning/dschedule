@@ -7,8 +7,10 @@ import org.enterprise.application.entrace.request.QueryDelayMessageRequest;
 import org.enterprise.infrastructure.mysql.entity.DelayMessage;
 import org.enterprise.infrastructure.mysql.mapper.DelayMessageMapper;
 import org.springframework.stereotype.Component;
+import org.springframework.util.CollectionUtils;
 
 import javax.annotation.Resource;
+import java.util.List;
 
 /**
  * @author: albert.chen
@@ -45,6 +47,21 @@ public class MysqlDelayAdapter {
         Page<DelayMessage> page = new Page<>(request.getPage(), request.getSize());
         return delayMessageMapper.selectPage(page, queryWrapper);
     }
+
+
+    public DelayMessage queryDealMessagesBySeqId(String seqId) {
+        QueryWrapper<DelayMessage> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq(DelayMessage.DelayMessageFiled.seqId, seqId);
+
+        List<DelayMessage> delayMessages = delayMessageMapper.selectList(queryWrapper);
+        if (CollectionUtils.isEmpty(delayMessages)) {
+            return null;
+        }
+
+        return delayMessages.get(0);
+    }
+
+
 
 
 }
